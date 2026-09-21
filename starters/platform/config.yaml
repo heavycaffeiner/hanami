@@ -1,0 +1,12 @@
+http:
+  address: 127.0.0.1:8080
+  read_header_timeout: 5s
+  idle_timeout: 60s
+  max_header_bytes: 1048576
+database:
+  dsn: file:platform.db
+  wal: true
+migration:
+  policy: migrate-before-start
+scheduler:
+  interval: 1h

@@ -1,0 +1,11 @@
+http:
+  address: 127.0.0.1:8080
+  read_header_timeout: 5s
+  idle_timeout: 60s
+  max_header_bytes: 1048576
+otel:
+  enabled: false
+  endpoint: localhost:4317
+  insecure: false
+  export_timeout: 5s
+  metric_interval: 30s

@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      matrix:
+        module:
+          - .
+          - api
+          - cli
+          - database
+          - migration
+          - scheduler
+          - config
+          - gin
+          - observability
+          - starters/api
+          - starters/worker
+          - starters/platform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - run: go test ./...
+      - run: go test -race ./...
+      - run: go vet ./...
+      - run: CGO_ENABLED=0 go test ./...
+      - run: CGO_ENABLED=0 go build ./...

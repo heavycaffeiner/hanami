@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a reusable framework capability backed by a real consumer
+title: "feat: "
+body:
+  - type: textarea
+    id: consumer
+    attributes:
+      label: Consumer and use case
+      description: Name the application that needs this and the repeated boilerplate or lifecycle contract it would remove.
+    validations:
+      required: true
+  - type: textarea
+    id: upstream
+    attributes:
+      label: Upstream libraries considered
+      description: Explain why the standard library or an existing maintained package is insufficient on its own.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Proposed responsibility boundary
+      description: State what Hanami would own and what the application would continue to own.
+    validations:
+      required: true
+  - type: textarea
+    id: failures
+    attributes:
+      label: Failure and cleanup semantics
+      description: Describe startup refusal, runtime failure, shutdown, and resource ownership.
+    validations:
+      required: true

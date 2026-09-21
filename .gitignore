@@ -1,0 +1,26 @@
+# Go build output
+/bin/
+*.test
+*.prof
+coverage.out
+
+# Starter binaries
+/starters/api/server
+/starters/worker/worker
+/starters/platform/platform
+/starters/secured/service
+/starters/reconfigurable/service
+
+# Local configuration and data
+.env
+.env.*
+*.local.yaml
+*.local.yml
+*.db
+*.db-shm
+*.db-wal
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store

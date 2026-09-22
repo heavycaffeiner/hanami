@@ -144,6 +144,10 @@ func ReexecForPolicy(policy Policy) error {
 	if err != nil {
 		return err
 	}
+	argv0, err := os.Executable()
+	if err != nil {
+		return err
+	}
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 	rulesetFD, err := buildLandlock(policy)
@@ -170,11 +174,6 @@ func ReexecForPolicy(policy Policy) error {
 		return err
 	}
 	if err := os.Setenv(HandoffEnvironment, raw); err != nil {
-		_ = unix.Close(rulesetFD)
-		return err
-	}
-	argv0, err := os.Executable()
-	if err != nil {
 		_ = unix.Close(rulesetFD)
 		return err
 	}

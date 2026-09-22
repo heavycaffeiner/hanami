@@ -4,7 +4,7 @@ go 1.27.1
 
 require (
 	github.com/gin-gonic/gin v1.12.0
-	github.com/heavycaffeiner/hanami v0.0.0
+	github.com/heavycaffeiner/hanami v0.1.0
 	github.com/heavycaffeiner/hanami/config v0.0.0
 	github.com/heavycaffeiner/hanami/gin v0.0.0
 	github.com/heavycaffeiner/hanami/observability v0.0.0

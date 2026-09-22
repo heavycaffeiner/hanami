@@ -7,7 +7,7 @@ require (
 	github.com/danielgtaylor/huma/v2 v2.39.1
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-co-op/gocron/v2 v2.22.0
-	github.com/heavycaffeiner/hanami v0.0.0
+	github.com/heavycaffeiner/hanami v0.1.0
 	github.com/heavycaffeiner/hanami/api v0.0.0
 	github.com/heavycaffeiner/hanami/cli v0.0.0
 	github.com/heavycaffeiner/hanami/config v0.0.0

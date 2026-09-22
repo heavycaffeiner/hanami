@@ -265,12 +265,14 @@ func buildLandlock(policy Policy) (int, error) {
 			return -1, err
 		}
 	}
-	if !policy.ExceptExec {
-		if executable, err := os.Executable(); err == nil {
-			if err := add(executable, uint64(RightExecute|RightReadFile)); err != nil {
-				_ = unix.Close(int(fd))
-				return -1, err
-			}
+	if executable, err := os.Executable(); err == nil {
+		rights := uint64(RightReadFile)
+		if !policy.ExceptExec {
+			rights |= uint64(RightExecute)
+		}
+		if err := add(executable, rights); err != nil {
+			_ = unix.Close(int(fd))
+			return -1, err
 		}
 	}
 	if _, err := os.Stat("/dev/null"); err == nil {

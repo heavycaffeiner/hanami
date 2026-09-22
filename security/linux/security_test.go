@@ -117,6 +117,24 @@ func TestLandlockRightsMatchKernelABI(t *testing.T) {
 	}
 }
 
+func TestExceptExecPolicyCanReadCurrentExecutableForReexec(t *testing.T) {
+	policy := Policy{Mode: ModeRequired, Landlock: true, ExceptExec: true}
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if pathGranted(policy, executable) {
+		t.Fatal("the application policy unexpectedly grants the executable before Hanami adds its reexec rule")
+	}
+	ruleset, err := buildLandlock(policy)
+	if err != nil {
+		t.Fatalf("building an ExceptExec ruleset for the current executable: %v", err)
+	}
+	if err := unix.Close(ruleset); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestSeccompDeniedOperationSubprocess(t *testing.T) {
 	if testing.Short() {
 		t.Skip("subprocess test disabled in short mode")

@@ -39,3 +39,46 @@ jobs:
       - run: go vet ./...
       - run: CGO_ENABLED=0 go test ./...
       - run: CGO_ENABLED=0 go build ./...
+
+  portability:
+    strategy:
+      matrix:
+        module:
+          - .
+          - gin
+        target:
+          - { goos: linux, goarch: arm64 }
+          - { goos: windows, goarch: amd64 }
+          - { goos: darwin, goarch: arm64 }
+          - { goos: freebsd, goarch: amd64 }
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - run: go build ./...
+        env:
+          CGO_ENABLED: "0"
+          GOOS: ${{ matrix.target.goos }}
+          GOARCH: ${{ matrix.target.goarch }}
+
+  linux-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - run: go test ./security/linux
+      - name: Compile Linux arm64 security tests
+        run: go test -c ./security/linux -o /tmp/hanami-security-arm64.test
+        env:
+          CGO_ENABLED: "0"
+          GOOS: linux
+          GOARCH: arm64

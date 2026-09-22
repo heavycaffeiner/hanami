@@ -128,8 +128,24 @@ func currentPlatformStatus() Status {
 	return status
 }
 
-// ReexecForPolicy applies Landlock to the locked OS thread, records a kernel
-// backed denial probe, closes all unlisted descriptors, and replaces image.
+// MaybeReexec applies the selected security policy before the Go runtime starts
+// application goroutines. It returns nil in the re-executed process after the
+// kernel-backed handoff has been verified.
+func MaybeReexec(policy Policy) error {
+	if err := policy.Validate(); err != nil {
+		return err
+	}
+	if policy.Mode == ModeOff || !policy.wantsLandlock() {
+		return nil
+	}
+	if raw := os.Getenv(HandoffEnvironment); raw != "" {
+		_, err := VerifyHandoff(raw, policy)
+		return err
+	}
+	return ReexecForPolicy(policy)
+}
+
+// ReexecForPolicy applies Landlock to the locked OS thread, records a kernel-backed denial probe, closes all unlisted descriptors, and replaces the process image.
 func ReexecForPolicy(policy Policy) error {
 	if err := policy.Validate(); err != nil {
 		return err
